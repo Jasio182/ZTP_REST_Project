@@ -11,10 +11,7 @@ import com.janmokrackirestproject.helpers.dataaccess.UserDbAccess;
 import com.janmokrackirestproject.requests.AddBookRequest;
 import com.janmokrackirestproject.requests.DeleteBookRequest;
 import com.janmokrackirestproject.requests.LoginRequest;
-import com.janmokrackirestproject.responses.BadRequestResponse;
-import com.janmokrackirestproject.responses.ExceptionResponse;
-import com.janmokrackirestproject.responses.OKResponse;
-import com.janmokrackirestproject.responses.Response;
+import com.janmokrackirestproject.responses.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -73,7 +70,7 @@ public class DashboardServlet extends HttpServlet {
                 }
             }
             else {
-                responseObj = new BadRequestResponse("Only Admin can add books");
+                responseObj = new UnauthorizedResponse("Only Admin can add books");
             }
         }
         catch (Exception e) {
@@ -104,7 +101,7 @@ public class DashboardServlet extends HttpServlet {
                 }
             }
             else {
-                responseObj = new BadRequestResponse("Only Admin can delete books");
+                responseObj = new UnauthorizedResponse("Only Admin can delete books");
             }
         }
         catch (Exception e) {
