@@ -5,7 +5,10 @@ import com.google.gson.reflect.TypeToken;
 import com.janmokrackirestproject.beans.Book;
 import com.janmokrackirestproject.beans.User;
 import com.janmokrackirestproject.helpers.EncryptionMethods;
+import com.janmokrackirestproject.helpers.dataaccess.BookDbAccess;
 import com.janmokrackirestproject.helpers.dataaccess.UserDbAccess;
+import com.janmokrackirestproject.requests.AddBookRequest;
+import com.janmokrackirestproject.requests.DeleteBookRequest;
 import com.janmokrackirestproject.requests.LoginRequest;
 import com.janmokrackirestproject.responses.BadRequestResponse;
 import com.janmokrackirestproject.responses.ExceptionResponse;
@@ -48,11 +51,52 @@ public class DashboardServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        BookDbAccess bookDbAccess = new BookDbAccess();
+        Response responseObj = new BadRequestResponse("Unable to add specified book");
+        try {
+            AddBookRequest addBookRequest =
+                    gson.fromJson(request.getReader(),AddBookRequest.class);
+            Book addedBook = bookDbAccess.AddBook(addBookRequest.getTitle(), addBookRequest.getAuthor(), addBookRequest.getYear());
+            if (addedBook != null){
+                books.add(addedBook);
+                responseObj = new OKResponse(addedBook);
+            }
+        }
+        catch (Exception e) {
+            responseObj = new ExceptionResponse(e.getLocalizedMessage());
+        }
+        finally {
+            response.setStatus(responseObj.getStatusCode());
+            gson.toJson(responseObj, response.getWriter());
+        }
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        BookDbAccess bookDbAccess = new BookDbAccess();
+        Response responseObj = new BadRequestResponse("Unable to delete specified book");
+        try {
+            DeleteBookRequest deleteBookRequest =
+                    gson.fromJson(request.getReader(),DeleteBookRequest.class);
+            Book bookToDelete = books.get(deleteBookRequest.getId());
+            if (bookToDelete != null){
+                bookDbAccess.RemoveBook(bookToDelete.getTitle());
+                books.remove(deleteBookRequest.getId());
+                responseObj = new OKResponse("");
+            }
+        }
+        catch (Exception e) {
+            responseObj = new ExceptionResponse(e.getLocalizedMessage());
+        }
+        finally {
+            response.setStatus(responseObj.getStatusCode());
+            gson.toJson(responseObj, response.getWriter());
+        }
     }
 }

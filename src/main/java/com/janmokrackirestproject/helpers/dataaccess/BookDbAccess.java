@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class BookDbAccess extends DbAccess  {
 
-    public boolean AddBook(String title, String author, int year)
+    public Book AddBook(String title, String author, int year)
     {
         try {
             Statement statement = GetConnection().createStatement();
             String query = "INSERT INTO Books VALUES ('"+title+"', '"+author+"', '"+ year +"');";
             statement.executeUpdate(query);
-            return true;
+            return new Book(title, author, year);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
