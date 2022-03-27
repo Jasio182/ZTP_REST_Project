@@ -2,8 +2,9 @@ package com.janmokrackirestproject.helpers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
-public class PasswordHashing {
+public class EncryptionMethods {
 
     public static String HashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -14,5 +15,9 @@ public class PasswordHashing {
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
+    }
+
+    public static String getBase64FromString(String str) {
+        return Base64.getEncoder().encodeToString(str.getBytes());
     }
 }

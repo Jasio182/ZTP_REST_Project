@@ -2,12 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>REST Service</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
+<h1><%= "REST Service started" %>
 </h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
 </body>
 </html>
