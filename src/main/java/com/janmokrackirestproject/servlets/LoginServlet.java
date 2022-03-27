@@ -23,17 +23,15 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("application/json");
         Gson gson = new Gson();
         UserDbAccess userDbAccess = new UserDbAccess();
-        Response responseObj = new OKResponse("Successfully logged in");
+        Response responseObj = new BadRequestResponse("Wrong login or password");
         try{
             LoginRequest loginRequest =
                     gson.fromJson(request.getReader(),LoginRequest.class);
             User user = userDbAccess.GetUser(loginRequest);
-            if(user == null) {
-                responseObj = new BadRequestResponse("Wrong login or password");
-            }
-            else {
+            if(user != null) {
                 request.getSession().setAttribute("CurrentUser", user);
                 response.addCookie(new Cookie("userId", EncryptionMethods.getBase64FromString(user.getLogin())));
+                responseObj = new OKResponse("");
             }
         }
         catch (Exception e) {

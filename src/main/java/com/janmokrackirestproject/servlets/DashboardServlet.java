@@ -3,6 +3,7 @@ package com.janmokrackirestproject.servlets;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.janmokrackirestproject.beans.Book;
+import com.janmokrackirestproject.beans.Role;
 import com.janmokrackirestproject.beans.User;
 import com.janmokrackirestproject.helpers.EncryptionMethods;
 import com.janmokrackirestproject.helpers.dataaccess.BookDbAccess;
@@ -31,6 +32,11 @@ public class DashboardServlet extends HttpServlet {
         books = (ArrayList<Book>) context.getAttribute("books");
     }
 
+    private boolean ifAdmin(HttpServletRequest request){
+       User user = (User) request.getSession().getAttribute("CurrentUser");
+       return user.getRole()==Role.ADMIN;
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -57,12 +63,17 @@ public class DashboardServlet extends HttpServlet {
         BookDbAccess bookDbAccess = new BookDbAccess();
         Response responseObj = new BadRequestResponse("Unable to add specified book");
         try {
-            AddBookRequest addBookRequest =
-                    gson.fromJson(request.getReader(),AddBookRequest.class);
-            Book addedBook = bookDbAccess.AddBook(addBookRequest.getTitle(), addBookRequest.getAuthor(), addBookRequest.getYear());
-            if (addedBook != null){
-                books.add(addedBook);
-                responseObj = new OKResponse(addedBook);
+            if(ifAdmin(request)) {
+                AddBookRequest addBookRequest =
+                        gson.fromJson(request.getReader(),AddBookRequest.class);
+                Book addedBook = bookDbAccess.AddBook(addBookRequest.getTitle(), addBookRequest.getAuthor(), addBookRequest.getYear());
+                if (addedBook != null){
+                    books.add(addedBook);
+                    responseObj = new OKResponse(addedBook);
+                }
+            }
+            else {
+                responseObj = new BadRequestResponse("Only Admin can add books");
             }
         }
         catch (Exception e) {
@@ -82,13 +93,18 @@ public class DashboardServlet extends HttpServlet {
         BookDbAccess bookDbAccess = new BookDbAccess();
         Response responseObj = new BadRequestResponse("Unable to delete specified book");
         try {
-            DeleteBookRequest deleteBookRequest =
-                    gson.fromJson(request.getReader(),DeleteBookRequest.class);
-            Book bookToDelete = books.get(deleteBookRequest.getId());
-            if (bookToDelete != null){
-                bookDbAccess.RemoveBook(bookToDelete.getTitle());
-                books.remove(deleteBookRequest.getId());
-                responseObj = new OKResponse("");
+            if(ifAdmin(request)) {
+                DeleteBookRequest deleteBookRequest =
+                        gson.fromJson(request.getReader(), DeleteBookRequest.class);
+                Book bookToDelete = books.get(deleteBookRequest.getId());
+                if (bookToDelete != null) {
+                    bookDbAccess.RemoveBook(bookToDelete.getTitle());
+                    books.remove(deleteBookRequest.getId());
+                    responseObj = new OKResponse("");
+                }
+            }
+            else {
+                responseObj = new BadRequestResponse("Only Admin can delete books");
             }
         }
         catch (Exception e) {
