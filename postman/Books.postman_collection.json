@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "04612ba3-9447-44bf-a041-937ea6c1bf81",
+		"name": "Books",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Delete book",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"Id\" : \"6\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{scheme}}://{{gateway}}/{{project}}/DashboardServlet",
+					"protocol": "{{scheme}}",
+					"host": [
+						"{{gateway}}"
+					],
+					"path": [
+						"{{project}}",
+						"DashboardServlet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add book",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Krew elfów\",\r\n    \"author\": \"Andrzej Sapkowski\",\r\n    \"year\": \"1994\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{scheme}}://{{gateway}}/{{project}}/DashboardServlet",
+					"protocol": "{{scheme}}",
+					"host": [
+						"{{gateway}}"
+					],
+					"path": [
+						"{{project}}",
+						"DashboardServlet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{scheme}}://{{gateway}}/{{project}}/DashboardServlet",
+					"protocol": "{{scheme}}",
+					"host": [
+						"{{gateway}}"
+					],
+					"path": [
+						"{{project}}",
+						"DashboardServlet"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

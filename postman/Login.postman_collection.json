@@ -1,0 +1,37 @@
+{
+	"info": {
+		"_postman_id": "15c37aee-36ac-4e7d-ae2a-9f2a6ae6d0b7",
+		"name": "Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"{username}\",\r\n    \"password\": \"{password}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{scheme}}://{{gateway}}/{{project}}/LoginServlet",
+					"protocol": "{{scheme}}",
+					"host": [
+						"{{gateway}}"
+					],
+					"path": [
+						"{{project}}",
+						"LoginServlet"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
