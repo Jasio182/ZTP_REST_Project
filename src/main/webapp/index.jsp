@@ -5,7 +5,7 @@
     <title>REST Service</title>
 </head>
 <body>
-<h1><%= "REST Service started" %>
-</h1>
+<a><%= "REST Service started" %>
+</a>
 </body>
 </html>
