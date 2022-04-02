@@ -1,1 +1,3 @@
-Java Servlet project for one of my courses.
+# ZTP_REST_Project
+
+Java REST project for one of my courses.
